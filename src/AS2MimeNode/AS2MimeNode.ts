@@ -12,7 +12,7 @@ import { hostname } from 'os'
  * @property {string|Buffer | Readable} [content]
  * @property {string} [boundary]
  * @property {string} [baseBoundary]
- * @property {false|string} [boundaryPrefix='--LibAs2_']
+ * @property {false|string} [boundaryPrefix='LibAs2']
  * @property {string} [contentType]
  * @property {boolean|'inline'|'attachment'} [contentDisposition]
  * @property {string} [messageId]
@@ -77,7 +77,7 @@ export class AS2MimeNode extends MimeNode {
     this.contentType = contentType
     this.boundaryPrefix =
       isNullOrUndefined(boundaryPrefix) && isNullOrUndefined(boundary)
-        ? '--LibAs2'
+        ? 'LibAs2'
         : boundaryPrefix === false || !isNullOrUndefined(boundary)
         ? ''
         : boundaryPrefix
