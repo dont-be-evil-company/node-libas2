@@ -21,16 +21,16 @@ so good sense should be used when using this library as the AS2 layer in an appl
 
 ## Usage
 
-Install it from the [npm repository](https://www.npmjs.com/package/@mistweaverco/libas2):
+Install it from the [npm repository](https://www.npmjs.com/package/@dont-be-evil-company/libas2):
 
 ```sh
-npm install --save @mistweaverco/libas2
+npm install --save @dont-be-evil-company/libas2
 ```
 
 Then import it in your project:
 
 ```typescript
-import { AS2Composer } from '@mistweaverco/libas2';
+import { AS2Composer } from '@dont-be-evil-company/libas2';
 ```
 
 ## Features
@@ -51,7 +51,7 @@ import {
   AS2Composer,
   type AS2ComposerOptions,
   request
-} from '@mistweaverco/libas2';
+} from '@dont-be-evil-company/libas2';
 import { configuration } from './config';
 import fs from 'fs';
 
