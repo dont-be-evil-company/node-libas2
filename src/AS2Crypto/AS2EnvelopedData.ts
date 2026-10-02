@@ -351,6 +351,6 @@ export class AS2EnvelopedData {
       this.data = await this._extendedDecrypt(decryptionKey, cryptoInfo.algorithm)
     }
 
-    return Buffer.from(this.data || '')
+    return this.data ? Buffer.from(this.data) : Buffer.alloc(0)
   }
 }

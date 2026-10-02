@@ -44,7 +44,7 @@ export interface AS2MimeNode {
   childNodes: AS2MimeNode[]
   nodeCounter: number
   raw: string
-  normalizeHeaderKey: Function
+  normalizeHeaderKey?: (key: string) => string
   _handleContentType(structured: any): void
   _encodeWords(value: string): string
   _encodeHeaderValue(key: string, value: string): string
