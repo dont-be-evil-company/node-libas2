@@ -1,34 +1,34 @@
-import { Readable } from 'stream'
-import { AS2Headers } from '../Interfaces'
-import { SigningOptions, EncryptionOptions } from '../AS2Crypto'
-import { AgreementOptions } from '../AS2Composer'
+import { Readable } from "stream";
+import { AS2Headers } from "../Interfaces";
+import { SigningOptions, EncryptionOptions } from "../AS2Crypto";
+import { AgreementOptions } from "../AS2Composer";
 
 export interface AS2MimeNodeOptions {
   /** Filename for the node. */
-  filename?: string
+  filename?: string;
   /** Content of the node. */
-  content?: string | Buffer | Readable
+  content?: string | Buffer | Readable;
   /** Overrides the entire multipart boundary. */
-  boundary?: string
+  boundary?: string;
   /** Shared part of the unique multipart boundary. */
-  baseBoundary?: string
+  baseBoundary?: string;
   /** Prefix for the boundary; default is 'LibAs2'. */
-  boundaryPrefix?: false | string
+  boundaryPrefix?: false | string;
   /** Content type of the node; will be auto-calculated from the filename if not set. */
-  contentType?: string
+  contentType?: string;
   /** The content disposition of the node. */
-  contentDisposition?: boolean | 'inline' | 'attachment'
+  contentDisposition?: boolean | "inline" | "attachment";
   /** Optional message ID; if not provided, one will be generated. */
-  messageId?: string
+  messageId?: string;
   /** Additional headers for the node. */
-  headers?: AS2Headers
+  headers?: AS2Headers;
   /** Options for signing the node. */
-  sign?: SigningOptions
+  sign?: SigningOptions;
   /** Options for encrypting the node. */
-  encrypt?: EncryptionOptions
+  encrypt?: EncryptionOptions;
 }
 
 export interface DispositionOutOptions {
-  agreement: AgreementOptions
-  returnNode?: boolean
+  agreement: AgreementOptions;
+  returnNode?: boolean;
 }

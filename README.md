@@ -3,7 +3,7 @@
 > [!IMPORTANT]  
 > This project is a hard-fork of the original [node-libas2](https://github.com/aaronhuggins/node-libas2)
 > It has some modifications to the original code, but isn't a complete rewrite.
-> 
+>
 > The original project is no longer maintained,
 > and this fork aims to provide a more stable and
 > up-to-date version of the library.
@@ -30,7 +30,7 @@ npm install --save @dont-be-evil-company/libas2
 Then import it in your project:
 
 ```typescript
-import { AS2Composer } from '@dont-be-evil-company/libas2';
+import { AS2Composer } from "@dont-be-evil-company/libas2";
 ```
 
 ## Features
@@ -45,60 +45,59 @@ import { AS2Composer } from '@dont-be-evil-company/libas2';
 ## Examples
 
 ```typescript
-
 import {
   AS2Constants,
   AS2Composer,
   type AS2ComposerOptions,
-  request
-} from '@dont-be-evil-company/libas2';
-import { configuration } from './config';
-import fs from 'fs';
+  request,
+} from "@dont-be-evil-company/libas2";
+import { configuration } from "./config";
+import fs from "fs";
 
-const LIBAS2_CERT = fs.readFileSync('certificate.crt', 'utf8')
-const LIBAS2_KEY = fs.readFileSync('certificate.key', 'utf8');
-const LIBAS2_CERT_AMAZON = fs.readFileSync('certificate-amazon.crt', 'utf8')
+const LIBAS2_CERT = fs.readFileSync("certificate.crt", "utf8");
+const LIBAS2_KEY = fs.readFileSync("certificate.key", "utf8");
+const LIBAS2_CERT_AMAZON = fs.readFileSync("certificate-amazon.crt", "utf8");
 
 const options: AS2ComposerOptions = {
   message: {
-    filename: 'msg.edifact',
-    contentType: 'application/EDIFACT',
+    filename: "msg.edifact",
+    contentType: "application/EDIFACT",
     content: ediMessage,
   },
   agreement: {
     host: {
       name: `MWCO ${configuration.region}`,
-      id: 'MWCEDIAS24007',
-      url: 'http://35.207.79.189:8085',
+      id: "MWCEDIAS24007",
+      url: "http://35.207.79.189:8085",
       certificate: LIBAS2_CERT,
       privateKey: LIBAS2_KEY,
       decrypt: false,
       sign: true,
       mdn: {
         async: false,
-        signing: AS2Constants.SIGNING.SHA256
-      }
+        signing: AS2Constants.SIGNING.SHA256,
+      },
     },
     partner: {
-      name: 'Amazon',
-      id: 'SE1Y1CG1Q1OF1QT',
-      url: 'http://as2-eu.amazonsedi.com/a331d41b-e681-461c-b40f-db6b143b213b',
-      file: 'EDIFACT',
+      name: "Amazon",
+      id: "SE1Y1CG1Q1OF1QT",
+      url: "http://as2-eu.amazonsedi.com/a331d41b-e681-461c-b40f-db6b143b213b",
+      file: "EDIFACT",
       certificate: LIBAS2_CERT_AMAZON,
       encrypt: AS2Constants.ENCRYPTION.AES128_CBC,
       oaepHashAlgorithm: AS2Constants.OAEP_HASH_ALGORITHMS.SHA1,
-      verify: true
-    }
+      verify: true,
+    },
   },
-}
+};
 
 const composer = new AS2Composer({
   message: options.message,
   agreement: options.agreement,
-})
+});
 
-const result = await request(await composer.toRequestOptions())
-const mdn = await result.mime()
-const message = await mdn.verify({ cert: LIBAS2_CERT_AMAZON })
-console.log('MDN received:', message);
+const result = await request(await composer.toRequestOptions());
+const mdn = await result.mime();
+const message = await mdn.verify({ cert: LIBAS2_CERT_AMAZON });
+console.log("MDN received:", message);
 ```

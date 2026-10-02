@@ -1,2 +1,2 @@
-export * from './AS2MimeNode'
-export * from './Interfaces'
+export * from "./AS2MimeNode";
+export * from "./Interfaces";

@@ -2,27 +2,27 @@
   "name": "@dont-be-evil-company/libas2",
   "version": "0.4.0",
   "description": "Implementation of the AS2 protocol as presented in RFC 4130 and related RFCs",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist/**"
-  ],
-  "scripts": {
-    "build": "tsc"
-  },
   "keywords": [
-    "as2",
     "RFC4130",
+    "as2",
     "as2 protocol",
-    "mdn",
-    "edi"
+    "edi",
+    "mdn"
   ],
+  "license": "MIT",
   "author": "The Dont Be Evil Company",
   "repository": {
     "type": "git",
     "url": "https://github.com/dont-be-evil-company/node-libas2"
   },
-  "license": "MIT",
+  "files": [
+    "dist/**"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
   "dependencies": {
     "@nhs-llc/emailjs-mime-parser": "2.1.0",
     "@peculiar/webcrypto": "1.5.0",

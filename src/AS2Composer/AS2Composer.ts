@@ -1,11 +1,11 @@
-import { AS2ComposerOptions, AgreementOptions } from './Interfaces'
-import { AS2Agreement } from './AS2Agreement'
-import { AS2MimeNodeOptions, AS2MimeNode } from '../AS2MimeNode'
-import { getAgreementOptions } from '../Helpers'
-import { AS2Headers, RequestOptions } from '../Interfaces'
-import { AS2Constants } from '../Constants'
+import { AS2ComposerOptions, AgreementOptions } from "./Interfaces";
+import { AS2Agreement } from "./AS2Agreement";
+import { AS2MimeNodeOptions, AS2MimeNode } from "../AS2MimeNode";
+import { getAgreementOptions } from "../Helpers";
+import { AS2Headers, RequestOptions } from "../Interfaces";
+import { AS2Constants } from "../Constants";
 
-const { STANDARD_HEADER, AS2_VERSION } = AS2Constants
+const { STANDARD_HEADER, AS2_VERSION } = AS2Constants;
 
 /** Options for composing an AS2 message.
  * @typedef {object} AS2ComposerOptions
@@ -43,102 +43,103 @@ const { STANDARD_HEADER, AS2_VERSION } = AS2Constants
  * @param {AS2ComposerOptions} options - The options for composing AS2 messages.
  */
 export class AS2Composer {
-  constructor (options: AS2ComposerOptions) {
-    this._message = { ...options.message }
-    this._headers = []
-    this.setAgreement(options.agreement)
+  constructor(options: AS2ComposerOptions) {
+    this._message = { ...options.message };
+    this._headers = [];
+    this.setAgreement(options.agreement);
 
     if (Array.isArray(options.additionalHeaders)) {
-      this._headers.push(...options.additionalHeaders)
+      this._headers.push(...options.additionalHeaders);
     } else {
       for (const [key, value] of Object.entries(options.additionalHeaders || {})) {
-        this._headers.push({ key, value })
+        this._headers.push({ key, value });
       }
     }
   }
 
-  _agreement: AS2Agreement
-  _message: AS2MimeNodeOptions
-  _headers: AS2Headers
-  message: AS2MimeNode
+  _agreement: AS2Agreement;
+  _message: AS2MimeNodeOptions;
+  _headers: AS2Headers;
+  message: AS2MimeNode;
 
   /** Set the agreement for this composer instance.
    * @param {AgreementOptions} agreement
    */
-  setAgreement (agreement: AgreementOptions): void {
-    this._agreement = getAgreementOptions(agreement)
+  setAgreement(agreement: AgreementOptions): void {
+    this._agreement = getAgreementOptions(agreement);
   }
 
   /** Compile the composed message into an instance of AS2MimeNode.
    * @returns {Promise<AS2MimeNode>} This composer instance as an AS2MimeNode.
    */
-  async compile (): Promise<AS2MimeNode> {
-    this.message = new AS2MimeNode({ ...this._message })
+  async compile(): Promise<AS2MimeNode> {
+    this.message = new AS2MimeNode({ ...this._message });
 
     if (this._agreement.host.sign) {
       this.message.setSigning({
         cert: this._agreement.host.certificate,
         key: this._agreement.host.privateKey,
-        algorithm: this._agreement.host.sign
-      })
+        algorithm: this._agreement.host.sign,
+      });
 
-      this.message = await this.message.sign()
+      this.message = await this.message.sign();
     }
 
     if (this._agreement.partner.encrypt) {
       this.message.setEncryption({
         cert: this._agreement.partner.certificate,
-        encryption: this._agreement.partner.encrypt
-      })
+        encryption: this._agreement.partner.encrypt,
+      });
 
-      this.message = await this.message.encrypt()
+      this.message = await this.message.encrypt();
     }
 
     // Set AS2 headers.
     this.message.setHeader([
       { key: STANDARD_HEADER.FROM, value: this._agreement.host.id },
       { key: STANDARD_HEADER.TO, value: this._agreement.partner.id },
-      { key: STANDARD_HEADER.VERSION, value: AS2_VERSION }
-    ])
-    this.message.messageId(true)
+      { key: STANDARD_HEADER.VERSION, value: AS2_VERSION },
+    ]);
+    this.message.messageId(true);
 
     // Set MDN headers.
     if (this._agreement.host.mdn) {
-      const mdn = this._agreement.host.mdn
-      let options = 'signed-receipt-protocol=optional,pkcs7-signature; signed-receipt-micalg=optional,sha-256'
+      const mdn = this._agreement.host.mdn;
+      let options =
+        "signed-receipt-protocol=optional,pkcs7-signature; signed-receipt-micalg=optional,sha-256";
 
       if (mdn.signing) {
-        options = `signed-receipt-protocol=required,pkcs7-signature; signed-receipt-micalg=required,${mdn.signing.toLowerCase()}`
+        options = `signed-receipt-protocol=required,pkcs7-signature; signed-receipt-micalg=required,${mdn.signing.toLowerCase()}`;
       }
 
-      this.message.setHeader(STANDARD_HEADER.MDN_TO, this._agreement.host.id)
-      this.message.setHeader(STANDARD_HEADER.MDN_OPTIONS, options)
+      this.message.setHeader(STANDARD_HEADER.MDN_TO, this._agreement.host.id);
+      this.message.setHeader(STANDARD_HEADER.MDN_OPTIONS, options);
 
       if (mdn.async) {
-        this.message.setHeader(STANDARD_HEADER.MDN_URL, this._agreement.host.url.toString())
+        this.message.setHeader(STANDARD_HEADER.MDN_URL, this._agreement.host.url.toString());
       }
     }
 
-    this.message.setHeader(this._headers)
+    this.message.setHeader(this._headers);
 
-    return this.message
+    return this.message;
   }
 
   /** Create a Node.js-compatible RequestOptions object from the composed message.
    * @param {string} [url] - Optional: The URL of the AS2 endpoint receiving this AS2 message; will use agreement partner url if not provided.
    * @returns {Promise<RequestOptions>} This composer instance as request options for Node.js.
    */
-  async toRequestOptions (url?: string): Promise<RequestOptions> {
+  async toRequestOptions(url?: string): Promise<RequestOptions> {
     if (this.message === undefined) {
-      await this.compile()
+      await this.compile();
     }
-    const { headers, body } = await this.message.buildObject()
+    const { headers, body } = await this.message.buildObject();
 
     return {
       url: url || this._agreement.partner.url,
       headers,
       body,
-      method: 'POST'
-    }
+      method: "POST",
+    };
   }
 }
