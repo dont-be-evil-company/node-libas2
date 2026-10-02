@@ -1,7 +1,7 @@
 import { AS2Constants } from "../Constants";
 import { AS2MimeNode } from "../AS2MimeNode";
 import { getEncryptionOptions, canonicalTransform } from "../Helpers";
-import * as MimeNode from "nodemailer/lib/mime-node";
+import MimeNode from "nodemailer/lib/mime-node";
 import {
   EncryptionOptions,
   SigningOptions,
@@ -208,14 +208,14 @@ export class AS2Crypto {
   /** Not yet implemented; do not use.
    * @throws ERROR.NOT_IMPLEMENTED
    */
-  static async compress(node: AS2MimeNode, options: any): Promise<AS2MimeNode> {
+  static async compress(_node: AS2MimeNode, _options: any): Promise<AS2MimeNode> {
     throw new Error(ERROR.NOT_IMPLEMENTED);
   }
 
   /** Not yet implemented; do not use.
    * @throws ERROR.NOT_IMPLEMENTED
    */
-  static async decompress(node: AS2MimeNode, options: any): Promise<AS2MimeNode> {
+  static async decompress(_node: AS2MimeNode, _options: any): Promise<AS2MimeNode> {
     throw new Error(ERROR.NOT_IMPLEMENTED);
   }
 }

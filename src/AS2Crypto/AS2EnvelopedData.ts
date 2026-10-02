@@ -18,11 +18,9 @@ export class AS2EnvelopedData {
   constructor(data: Buffer, enveloped: boolean = false) {
     pkijs.setEngine(
       "newEngine",
-      webcrypto,
       new pkijs.CryptoEngine({
         name: "@peculiar/webcrypto",
         crypto: webcrypto,
-        subtle: webcrypto.subtle,
       }),
     );
 

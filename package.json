@@ -1,6 +1,6 @@
 {
   "name": "@dont-be-evil-company/libas2",
-  "version": "0.4.0",
+  "version": "1.0.0",
   "description": "Implementation of the AS2 protocol as presented in RFC 4130 and related RFCs",
   "keywords": [
     "RFC4130",
@@ -21,40 +21,51 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "format": "vp fmt",
+    "fmt": "vp fmt",
+    "lint": "vp lint",
+    "test": "vitest run"
   },
   "dependencies": {
     "@nhs-llc/emailjs-mime-parser": "2.1.0",
-    "@peculiar/webcrypto": "1.5.0",
-    "asn1js": "2.4.0",
-    "node-forge": "1.3.2",
-    "nodemailer": "7.0.7",
-    "pkijs": "2.1.90"
+    "@peculiar/webcrypto": "1.7.1",
+    "asn1js": "3.0.10",
+    "node-forge": "1.4.0",
+    "nodemailer": "10.0.13",
+    "pkijs": "3.4.1"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "7.18.6",
     "@babel/plugin-proposal-object-rest-spread": "7.20.7",
-    "@babel/preset-env": "7.27.2",
-    "@babel/preset-typescript": "7.27.1",
-    "@types/luxon": "1.27.1",
-    "@types/mailparser": "2.7.4",
-    "@types/node": "14.18.63",
-    "@types/node-forge": "0.9.10",
-    "@types/nodemailer": "6.4.17",
-    "@types/ping": "0.2.1",
-    "@types/pkijs": "0.0.4",
-    "del-cli": "3.0.1",
+    "@babel/preset-env": "8.0.6",
+    "@babel/preset-typescript": "8.0.1",
+    "@types/luxon": "3.7.6",
+    "@types/mailparser": "3.9.0",
+    "@types/node": "26.6.4",
+    "@types/node-forge": "1.3.14",
+    "@types/nodemailer": "8.0.2",
+    "@types/ping": "0.4.4",
+    "@types/pkijs": "3.0.1",
+    "del-cli": "7.0.0",
     "dts-bundle-webpack": "1.0.2",
     "jsdoc-babel": "0.5.0",
-    "luxon": "1.28.1",
-    "ping": "0.2.3",
-    "sinon": "9.2.4",
+    "luxon": "3.7.2",
+    "ping": "1.0.0",
+    "sinon": "22.1.0",
     "source-map-support": "0.5.21",
-    "ts-loader": "8.4.0",
-    "ts-mock-imports": "1.3.17",
-    "ts-node": "9.1.1",
-    "typescript": "4.9.5",
+    "ts-loader": "9.6.2",
+    "ts-mock-imports": "1.3.19",
+    "ts-node": "10.9.2",
+    "typescript": "7.0.2",
     "vite": "8.3.2",
     "vitest": "5.0.3"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.8.1",
+      "onFail": "download"
+    }
   }
 }

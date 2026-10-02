@@ -1,5 +1,5 @@
 import { Readable } from "stream";
-import * as MimeNode from "nodemailer/lib/mime-node";
+import MimeNode from "nodemailer/lib/mime-node";
 import { AS2MimeNodeOptions, DispositionOutOptions } from "./Interfaces";
 import {
   isNullOrUndefined,
@@ -38,29 +38,6 @@ import { hostname } from "os";
  * @property {AgreementOptions} agreement
  * @property {boolean} [returnNode]
  */
-
-export interface AS2MimeNode {
-  keepBcc: boolean;
-  _headers: Array<{
-    key: string;
-    value: string;
-  }>;
-  filename: string;
-  date: Date;
-  boundary: string;
-  boundaryPrefix: string;
-  content: string | Buffer | Readable;
-  contentType: string;
-  rootNode: AS2MimeNode;
-  parentNode?: AS2MimeNode;
-  childNodes: AS2MimeNode[];
-  nodeCounter: number;
-  raw: string;
-  normalizeHeaderKey?: (key: string) => string;
-  _handleContentType(structured: any): void;
-  _encodeWords(value: string): string;
-  _encodeHeaderValue(key: string, value: string): string;
-}
 
 /** Class for describing and constructing a MIME document.
  * @param {AS2MimeNodeOptions} options - Options for constructing an AS2 message.
@@ -151,6 +128,26 @@ export class AS2MimeNode extends MimeNode {
 
   private _sign: SigningOptions;
   private _encrypt: EncryptionOptions;
+  declare keepBcc: boolean;
+  declare _headers: Array<{
+    key: string;
+    value: string;
+  }>;
+  declare filename: string;
+  declare date: Date;
+  declare boundary: string;
+  declare boundaryPrefix: string;
+  declare content: string | Buffer | Readable;
+  declare contentType: string;
+  declare rootNode: AS2MimeNode;
+  declare parentNode: AS2MimeNode | undefined;
+  declare childNodes: AS2MimeNode[];
+  declare nodeCounter: number;
+  declare raw: string;
+  declare normalizeHeaderKey: (key: string, value: string) => string;
+  declare _handleContentType: (structured: any) => void;
+  declare _encodeWords: (value: string) => string;
+  declare _encodeHeaderValue: (key: string, value: string) => string;
   parsed: boolean;
   smime: boolean;
   signed: boolean;
@@ -188,7 +185,7 @@ export class AS2MimeNode extends MimeNode {
    * @returns {string} The message ID of the MIME.
    */
   messageId(create: boolean = false): string {
-    let messageId = this.getHeader("Message-ID");
+    let messageId = this.getHeader("Message-ID") as string;
 
     // You really should define your own Message-Id field!
     if (!messageId && create) {

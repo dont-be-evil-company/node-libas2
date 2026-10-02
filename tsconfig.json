@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
     "newLine": "lf",
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "node16",
+    "moduleResolution": "node16",
+    "strict": false,
     "noImplicitAny": true,
     "removeComments": false,
-    "suppressImplicitAnyIndexErrors": true,
     "target": "es2017",
     "experimentalDecorators": true,
+    "rootDir": "src",
     "outDir": "dist",
     "declaration": true,
     "allowSyntheticDefaultImports": true,

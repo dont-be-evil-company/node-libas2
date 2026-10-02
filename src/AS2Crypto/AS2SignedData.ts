@@ -13,11 +13,9 @@ export class AS2SignedData {
   constructor(data: Buffer, signedData?: Buffer) {
     pkijs.setEngine(
       "newEngine",
-      webcrypto,
       new pkijs.CryptoEngine({
         name: "@peculiar/webcrypto",
         crypto: webcrypto,
-        subtle: webcrypto.subtle,
       }),
     );
 
@@ -125,7 +123,11 @@ export class AS2SignedData {
     const messageDigest = await crypto.digest({ name: algorithm }, this.data);
     const privateKeyOptions = crypto.getAlgorithmByOID(this._getCertAlgorithmId(certificate));
 
-    if ("hash" in privateKeyOptions) {
+    // pkijs 3 maps the rsaEncryption OID to RSAES-PKCS1-v1_5. Signing needs RSASSA-PKCS1-v1_5.
+    if (privateKeyOptions.name === "RSAES-PKCS1-v1_5") {
+      privateKeyOptions.name = "RSASSA-PKCS1-v1_5";
+      privateKeyOptions.hash = { name: algorithm };
+    } else if ("hash" in privateKeyOptions) {
       privateKeyOptions.hash.name = algorithm;
     }
 
@@ -217,11 +219,18 @@ export class AS2SignedData {
       return false;
     }
 
-    const result: any = await this.signed.verify({
-      signer: index === -1 ? 0 : index,
-      data: this.data,
-      extendedMode: true,
-    });
+    let result: any;
+    try {
+      result = await this.signed.verify({
+        signer: index === -1 ? 0 : index,
+        data: this.data,
+        extendedMode: true,
+      });
+    } catch (error) {
+      // pkijs 3 throws when the digest does not match. Callers retry without a trailing CRLF.
+      if (debugMode) throw error;
+      return false;
+    }
 
     if (result.signatureVerified) {
       await this._calculateMessageDigest(index);

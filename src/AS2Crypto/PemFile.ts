@@ -59,7 +59,7 @@ export class PemFile {
 
     pemFile.data = new Uint8Array(data).buffer;
 
-    if (PEM_FILETYPE[type]) {
+    if (type === "CERTIFICATE" || type === "PRIVATE_KEY" || type === "PUBLIC_KEY") {
       pemFile.type = type;
     }
 

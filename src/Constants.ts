@@ -8,7 +8,9 @@ export const getPackageJson = function getPackageJson(filename?: string, index: 
 
   try {
     pkg = JSON.parse(readFileSync(resolve(dirname(filename), "package.json"), "utf8"));
-  } catch (err) {}
+  } catch {
+    // package.json is not in this directory; the caller walks up the tree.
+  }
 
   if (pkg) {
     return pkg;

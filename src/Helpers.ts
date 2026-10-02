@@ -63,7 +63,7 @@ export function parseHeaderString(
   keyToLowerCase: boolean | Function = false,
   callback?: Function,
 ): { [key: string]: any } {
-  const result = {};
+  const result: { [key: string]: any } = {};
 
   if (!headers) return result;
   if (typeof keyToLowerCase === "function") {
@@ -136,7 +136,13 @@ export function isSMime(value: string) {
 export function canonicalTransform(node: AS2MimeNode): void {
   const newline = /\r\n|\r|\n/gu;
 
-  if (node.getHeader("content-type").slice(0, 5) === "text/" && !isNullOrUndefined(node.content)) {
+  const contentType = node.getHeader("content-type");
+
+  if (
+    typeof contentType === "string" &&
+    contentType.slice(0, 5) === "text/" &&
+    !isNullOrUndefined(node.content)
+  ) {
     node.content = (node.content as string).replace(newline, CRLF);
   }
 

@@ -69,7 +69,7 @@ export class AS2DispositionNotification {
    * @returns {object} This instance as key/value pairs.
    */
   toNotification?(): { [key: string]: string } {
-    const result = {};
+    const result: { [key: string]: string } = {};
 
     for (const [key, value] of Object.entries(this.headers || {})) {
       result[key] = value;

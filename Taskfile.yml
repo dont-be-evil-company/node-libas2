@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+---
+version: "3"
+
+tasks:
+  default:
+    desc: Lists all available tasks
+    cmds:
+      - task --list
+    silent: true
+  build:
+    desc: Builds the library
+    cmds:
+      - vpr build
+    silent: true
+  fmt:
+    desc: Formats all files
+    aliases:
+      - format
+    cmds:
+      - vp format
+    silent: true
+  lint:
+    desc: Runs lint on all files
+    cmds:
+      - vp lint
+    silent: true
